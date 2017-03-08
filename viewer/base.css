@@ -78,7 +78,7 @@ content: "`";
     font-family: "HelveticaNeueCyrBold";
 }
 
-.not .perl .remark-code-line-highlighted {
+.not .remark-code-line-highlighted, .not .remark-code-span-highlighted {
     background-color: rgba(255, 0, 0, 0.5)
 }
 
@@ -256,6 +256,7 @@ table td, table th {}
 }
 .small14 .remark-code {
     font-size: 14px !important;
+    line-height: 1.2em;
 }
 
 table .small16 {
