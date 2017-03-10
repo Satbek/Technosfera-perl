@@ -39,11 +39,10 @@ anagram(['пятак', 'ЛиСток', 'пятка', 'стул', 'ПяТаК', '
 
 =cut
 
-sub is_anagram ($$) {
-	my $first = CORE::fc decode('utf8',shift);
-	my $second = CORE::fc decode('utf8',shift);
-	return (join ('',sort split ('',$first))) eq 
-			(join ('',sort split ('',$second)));
+sub sorted_word ($) {
+	my $result;
+	$result = CORE::fc decode('utf8', shift);
+	return join '', sort split ('',$result);
 }
 
 sub anagram {

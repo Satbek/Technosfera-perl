@@ -46,12 +46,6 @@ sub is_anagram ($$) {
 			(join ('',sort split ('',$second)));
 }
 
-sub sorted_word ($) {
-	my $result;
-	$result = CORE::fc decode('utf8', shift);
-	return join '', sort split ('',$result);
-}
-
 sub anagram {
 	my $words_list = shift;
 	my %result;
