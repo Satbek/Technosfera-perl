@@ -58,7 +58,7 @@ sub anagram {
 	my %buf_result;
 	for (@$words_list) {
 		$buf_result{sorted_word($_)} ||= [];
-		push @{$buf_result{sorted_word($_)}}, CORE::fc decode('utf8', $_);
+		push @{$buf_result{sorted_word($_)}}, $_;
 	}
 	for my $key (keys %buf_result) {
 		if (scalar @{$buf_result{$key}} == 1) {
