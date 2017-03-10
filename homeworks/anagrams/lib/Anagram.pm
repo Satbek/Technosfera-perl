@@ -1,6 +1,6 @@
 package Anagram;
 
-use 5.010;
+use 5.018;
 use strict;
 use warnings;
 use Encode;
@@ -41,7 +41,7 @@ anagram(['пятак', 'ЛиСток', 'пятка', 'стул', 'ПяТаК', '
 
 sub sorted_word ($) {
 	my $result;
-	$result = CORE::fc decode('utf8', shift);
+	$result = fc decode('utf8', shift);
 	return join '', sort split ('',$result);
 }
 
@@ -51,7 +51,7 @@ sub anagram {
 	my %buf_result;
 	for (@$words_list) {
 		$buf_result{sorted_word($_)} ||= [];
-		push @{$buf_result{sorted_word($_)}}, CORE::fc decode('utf8', $_);
+		push $buf_result{sorted_word($_)}, fc decode('utf8', $_);
 	}
 	for my $key (keys %buf_result) {
 		if (scalar @{$buf_result{$key}} == 1) {
