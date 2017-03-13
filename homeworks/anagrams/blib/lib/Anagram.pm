@@ -53,10 +53,9 @@ sub anagram {
 		$buf_result{sorted_word($_)} ||= [];
 		push $buf_result{sorted_word($_)}, fc decode('utf8', $_);
 		if (scalar @{$buf_result{sorted_word($_)}} > 1 and 
-			$buf_result{sorted_word($_)}[-1] eq $buf_result{sorted_word($_)}[-2]) {
+		$buf_result{sorted_word($_)}[-1] eq $buf_result{sorted_word($_)}[-2]) {
 			pop $buf_result{sorted_word($_)};
 		}
-		
 	}
 	for my $key (keys %buf_result) {
 		if (scalar @{$buf_result{$key}} == 1) {

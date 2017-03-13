@@ -52,10 +52,10 @@ sub anagram {
 	for (@$words_list) {
 		$buf_result{sorted_word($_)} ||= [];
 		push $buf_result{sorted_word($_)}, fc decode('utf8', $_);
-		if (scalar @{$buf_result{sorted_word($_)}} > 1 and 
-			$buf_result{sorted_word($_)}[-1] eq $buf_result{sorted_word($_)}[-2]) {
-			pop $buf_result{sorted_word($_)};
-		}
+		#if (scalar @{$buf_result{sorted_word($_)}} > 1 and 
+		#$buf_result{sorted_word($_)}[-1] eq $buf_result{sorted_word($_)}[-2]) {
+		#	pop $buf_result{sorted_word($_)};
+		#}
 	}
 	for my $key (keys %buf_result) {
 		if (scalar @{$buf_result{$key}} == 1) {
@@ -67,6 +67,9 @@ sub anagram {
 			my %seen;
 			[grep {!$seen{$_}++} map {encode('utf8', $_)} @{$buf_result{$key}}];
 		};
+		if (scalar @{$result{$new_key}} == 1) {
+			delete $resultlut{$new_key};
+		}
 	}
     #
     # Поиск анограмм
