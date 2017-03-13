@@ -68,7 +68,7 @@ sub anagram {
 			[grep {!$seen{$_}++} map {encode('utf8', $_)} @{$buf_result{$key}}];
 		};
 		if (scalar @{$result{$new_key}} == 1) {
-			delete $resultlut{$new_key};
+			delete $result{$new_key};
 		}
 	}
     #
