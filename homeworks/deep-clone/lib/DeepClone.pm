@@ -61,4 +61,5 @@ sub clone_($;$) {
 sub clone($) {
 	return eval { clone_(shift) } or undef;
 }
+
 1;
