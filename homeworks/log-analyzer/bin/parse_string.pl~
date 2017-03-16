@@ -13,9 +13,8 @@ use 5.018;
 use strict;
 use warnings;
 use DDP;
-my $str = '37.20.165.188 [03/Mar/2017:19:08:18 +0300] "GET /music/artists/%D0%A1%D0%B0%D1%88%D0%B0%20Project HTTP/1.1" 302 829 "http://go.mail.ru/some/page/845160" "Mozilla/5.0 (Windows NT 5.1; rv:51.0) Gecko/20100101 Firefox/51.0" "-"';
-$str =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s*\[(.+)\]\s*"(.+?)"\s*(\d+)\s*(\d+)\s*"(.*?)"\s*"(.*?)"\s*"(\d+.\d+)"/;
-#[(.*)]\s*"(.+)"\d+\s*\d+\s"(.*)"\s*"(.*)"\s*"(\d{1}.\d{2})"
+my $str = '51.34.179.202 [03/Mar/2017:18:46:00 +0300] "GET /gmail.com/clicksud.com/video/embed/_myvideo/662 HTTP/1.1" 200 17179 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTMmyfe4 1488555960:000 87.168.22.22 - - [03/Mar/2017:18:46:00 +0300] "GET /music/search/b.a.p HTTP/1.1" 200 88619 "-" "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0" "8.22"';
+say $str =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}).+\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] "(.+?)".+(\d+)\s*(\d+)\s*"(.*?)"\s*"(.*?)"\s*"(\d+.\d+|.*)"/;
 say $1;
 say $2;
 say $3;
@@ -24,3 +23,7 @@ say $5;
 say $6;
 say $7;
 say $8;
+#[(.*)]\s*"(.+)"\d+\s*\d+\s"(.*)"\s*"(.*)"\s*"(\d{1}.\d{2})"
+$str = "[03/Mar/2017:18:46:00 +0300]";
+#say $str =~ m/\[\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300\]/;
+
