@@ -21,12 +21,7 @@ die "File '$filepath' not found\n" unless -f $filepath;
 my $parsed_data = parse_file($filepath);
 report($parsed_data);
 exit;
-#03/Mar/2017:18:28:38
-sub calculate_host_time (@){
-	my @times = shift;
-	$_ =~ m/^\d{2}.+\w{3}.+\d{4}:\d{2}:\d{2}:\d{2}$/;
-	#my @time = map {Time::Piece->strptime($_, %d/%b/%Y)} @times;
-}
+
 my %statuses;
 sub parse_file {
     my $file = shift;
@@ -104,14 +99,12 @@ sub report {
 	$total{avg} = $total{count}/$total{uniq_minuets};
 	$total{data} = int($total{data}/1024);
 	for (sort(keys %statuses)) {
-			$total{$_} = int($total{$_}/1024);
+		$total{$_} = int($total{$_}/1024);
 	}
-	#p %logs;
-	#p %total;
-	print "IP\t\tcount\tavg\tdata\t200\t301\t302\t400\t403\t404\t408\t414\t499\t500\n";
-	print "total\t\t$total{count}\t";
+	print "IP\tcount\tavg\tdata\t200\t301\t302\t400\t403\t404\t408\t414\t499\t500\n";
+	print "total\t$total{count}\t";
 	printf("%.2f\t", $total{avg});
-	print "$total{data}\t$total{200}\t$total{301}\t$total{302}\t$total{400}\t$total{403}\t$total{404}\t$total{408}\t$total{414}\t$total{499}\t$total{500}\t\n";
+	print "$total{data}\t$total{200}\t$total{301}\t$total{302}\t$total{400}\t$total{403}\t$total{404}\t$total{408}\t$total{414}\t$total{499}\t$total{500}\n";
 	for my $i(0..9) {
 		$logs{$a[$i]}->{data} = int($logs{$a[$i]}->{data}/1024);
 		print "$a[$i]\t$logs{$a[$i]}->{count}\t";
@@ -119,7 +112,12 @@ sub report {
 		print "$logs{$a[$i]}->{data}\t";
 		for (sort(keys %statuses)) {
 			$logs{$a[$i]}->{$_} = int($logs{$a[$i]}->{$_}/1024);
-			print "$logs{$a[$i]}->{$_}\t";
+			if ($_ != 500){
+				print "$logs{$a[$i]}->{$_}\t";
+			}
+			else {
+				print "$logs{$a[$i]}->{$_};
+			}
 		}
 		print "\n";
 	}
