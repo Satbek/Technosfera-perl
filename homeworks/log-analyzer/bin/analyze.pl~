@@ -39,7 +39,9 @@ sub parse_file {
     while (my $log_line = <$fd>) {
         # you can put your code here
         # $log_line contains line from log file
-		$log_line =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s*\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\]\s*"(.+?)"\s*(\d+)\s*(\d+)\s*"(.*?)"\s*"(.*?)"\s*"(\d+.\d+|.*)"/;
+		if (not $log_line =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s{1}+\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] "(.+?)" (\d{3}) (\d+) "(.+?)" "(.+?)" "(\d{1}.\d{2}||-)"$/)
+		{next;};
+
 		my $ip = $1;
 		$logs{$ip} ||= {};
 		$logs{$ip}->{count} ||= 0;
@@ -105,11 +107,11 @@ sub report {
 			$total{$_} = int($total{$_}/1024);
 	}
 	#p %logs;
-	p %total;
+	#p %total;
 	print "IP\t\tcount\tavg\tdata\t200\t301\t302\t400\t403\t404\t408\t414\t499\t500\n";
 	print "total\t\t$total{count}\t";
 	printf("%.2f\t", $total{avg});
-	print "$total{data}\t$total{200}\t$total{301}\t$total{302}\t$total{400}\t$total{403}\t$total{404}\t$total{408}\t$total{414}\t$total{499}\t$total{500}\t";
+	print "$total{data}\t$total{200}\t$total{301}\t$total{302}\t$total{400}\t$total{403}\t$total{404}\t$total{408}\t$total{414}\t$total{499}\t$total{500}\t\n";
 	for my $i(0..9) {
 		$logs{$a[$i]}->{data} = int($logs{$a[$i]}->{data}/1024);
 		print "$a[$i]\t$logs{$a[$i]}->{count}\t";
