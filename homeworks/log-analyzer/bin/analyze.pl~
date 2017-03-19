@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use 5.018;
 use DDP;
-use Time::Piece;
+
 #* IP-адрес 1
 #* метка времени 2
 #* строка запроса 3
@@ -22,43 +22,36 @@ my $parsed_data = parse_file($filepath);
 report($parsed_data);
 exit;
 
-my %statuses;
 sub parse_file {
     my $file = shift;
 
     # you can put your code here
 
     my $result;
+	my %statuses;
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
 	my %logs;
     while (my $log_line = <$fd>) {
         # you can put your code here
         # $log_line contains line from log file
-		if (not $log_line =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s{1}+\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] "(.+?)" (\d{3}) (\d+) "(.+?)" "(.+?)" "(\d{1}.\d{2}||-)"$/)
-		{next;};
-
-		my $ip = $1;
-		$logs{$ip} ||= {};
-		$logs{$ip}->{count} ||= 0;
-		$logs{$ip}->{count}++;
-		my $data = $5;
-		my $status = $4;
-		$statuses{$status} = "";#to get the array of statuses
-		$logs{$ip}->{"$status"} ||= 0;
-		$logs{$ip}->{"$status"} += $data;
-		my $coef = $8;
-		$logs{$ip}->{"data"} ||= 0;
-		if ($status eq "200") {
-			if ($coef ne "-") {
-				$logs{$ip}->{"data"} += int($data*$coef);
+		if (not $log_line =~ m{^(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\ \[(?<date>\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] ".+?" (?<status>\d{3}) (?<data>\d+) ".+?" ".+?" "(?<coef>\d{1}.\d{2}||-)"$}x) {next};
+		$logs{$+{ip}} ||= {};
+		$logs{$+{ip}}->{count} ||= 0;
+		$logs{$+{ip}}->{count}++;
+		$statuses{$+{status}} = "";#to get the array of statuses
+		$logs{$+{ip}}->{$+{status}} ||= 0;
+		$logs{$+{ip}}->{$+{status}} += $+{data};
+		$logs{$+{ip}}->{"data"} ||= 0;
+		if ($+{status} eq "200") {
+			if ($+{coef} ne "-") {
+				$logs{$+{ip}}->{"data"} += int($+{data}*$+{coef});
 			}
 			else {
-				$logs{$ip}->{"data"} += $data;
+				$logs{$+{ip}}->{"data"} += $+{data};
 			}
 		}
-		$logs{$ip}->{"times"} ||= [];
-		my $time = $2;
-		push $logs{$ip}->{"times"}, $time;
+		$logs{$+{ip}}->{"times"} ||= [];
+		push $logs{$+{ip}}->{"times"}, $+{date};
     }
     close $fd;
 	for my $ip(keys %logs) {
@@ -67,13 +60,13 @@ sub parse_file {
 		}
 	}
     # you can put your code here
-	$result = \%logs;
-    return $result;
+	return [\%logs, \%statuses];
 }
 
 sub report {
-    my $result = shift;
-	my %logs = %{$result};
+	my $result = shift;
+	my %logs = %{$result->[0]};
+	my %statuses = %{$result->[1]};
 	my @a = sort {$logs{$b}->{count} <=> $logs{$a}->{count}} keys %logs;
 	for my $k(keys %logs) {
 		#03/Mar/2017:18:28:38 +0300
@@ -116,11 +109,10 @@ sub report {
 				print "$logs{$a[$i]}->{$_}\t";
 			}
 			else {
-				print "$logs{$a[$i]}->{$_};
+				print "$logs{$a[$i]}->{$_}";
 			}
 		}
 		print "\n";
 	}
-    # you can put your code here
-
+	# you can put your code here
 }

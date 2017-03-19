@@ -13,17 +13,12 @@ use 5.018;
 use strict;
 use warnings;
 use DDP;
-my $str = '93.76.7.30 [03/Mar/2017:18:46:00 +0300] "GET /music/songs/nto-trauma-worakls-remix-0c5fcf324311cf433c31ce0f9104694a/related HTTP/1.1" 200 84033 "-" "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)" "7.70"
-';
-$str =~ m/^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s{1}+\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] "(.+?)" (\d{3}) (\d+) "(.+?)" "(.+?)" "(\d{1}.\d{2}||-)"$/;
-say $1;
-say $2;
-say $3;
-say $4;
-say $5;
-say $6;
-say $7;
-say $8;
+my $str = '51.34.179.202 [03/Mar/2017:18:46:00 +0300] "GET /gmail.com/clicksud.com/video/embed/_myvideo/662 HTTP/1.1" 200 17179 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTMmyfe4 1488555960:000 87.168.22.22 - - [03/Mar/2017:18:46:00 +0300] "GET /music/search/b.a.p HTTP/1.1" 200 88619 "-" "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0" "8.22"';
+$str =~ m{^(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\s{1}+\[(?<date>\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] "(.+?)" (?<status>\d{3}) (?<data>\d+) "(.+?)" "(.+?)" "(?<coef>\d{1}.\d{2}||-)"$}x; #why?
+say $+{ip};
+say $+{date};
+say $+{data};
+say $+{coef};
 #[(.*)]\s*"(.+)"\d+\s*\d+\s"(.*)"\s*"(.*)"\s*"(\d{1}.\d{2})"
 $str = "[03/Mar/2017:18:46:00 +0300]";
 #say $str =~ m/\[\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300\]/;
