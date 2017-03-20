@@ -34,7 +34,15 @@ sub parse_file {
     while (my $log_line = <$fd>) {
         # you can put your code here
         # $log_line contains line from log file
-		if (not $log_line =~ m/^(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})\ \[(?<date>\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] ".+?" (?<status>\d{3}) (?<data>\d+) ".+?" ".+?" "(?<coef>\d{1}.\d{2}||-)"$/) {next};
+		if (not $log_line =~ m{^
+			(?<ip>\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3})[ ]
+			\[(?<date>\d{2}/\w+/\d{4}:\d{2}:\d{2}:\d{2}[ ]\+0300)\][ ]
+			".+?"[ ]
+			(?<status>\d{3})[ ]
+			(?<data>\d+)[ ]
+			".+?"[ ]"(.+?)"[ ]
+			"(?<coef>\d{1}[.]\d{2}||-)"
+		$}x) { next };
 		$logs{$+{ip}} ||= {};
 		$logs{$+{ip}}->{count} ||= 0;
 		$logs{$+{ip}}->{count}++;

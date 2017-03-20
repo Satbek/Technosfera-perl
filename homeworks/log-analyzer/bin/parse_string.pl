@@ -15,13 +15,13 @@ use warnings;
 use DDP;
 my $str = '51.34.179.202 [03/Mar/2017:18:46:00 +0300] "GET /gmail.com/clicksud.com/video/embed/_myvideo/662 HTTP/1.1" 200 17179 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTMmyfe4 1488555960:000 87.168.22.22 - - [03/Mar/2017:18:46:00 +0300] "GET /music/search/b.a.p HTTP/1.1" 200 88619 "-" "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0" "8.22"';
 $str =~ m{^
-			(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}) 
-			\[(?<date>\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2} \+0300)\] 
-			"(.+?)" 
-			(?<status>\d{3}) 
-			(?<data>\d+) 
-			"(.+?)" "(.+?)" 
-			"(?<coef>\d{1}.\d{2}||-)"
+			(?<ip>\d{1,3}[.]\d{1,3}[.]\d{1,3}[.]\d{1,3})[ ]
+			\[(?<date>\d{2}/\w+/\d{4}:\d{2}:\d{2}:\d{2}[ ]\+0300)\][ ]
+			"(.+?)"[ ]
+			(?<status>\d{3})[ ]
+			(?<data>\d+)[ ]
+			"(.+?)"[ ]"(.+?)"[ ]
+			"(?<coef>\d{1}[.]\d{2}||-)"
 		$}x; #why?
 say $+{ip};
 say $+{date};
