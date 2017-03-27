@@ -51,38 +51,28 @@ our %EXPORT_TAGS;
 our @EXPORT_OK;
 sub import {
 	my $module_name = shift;
-	if ($module_name ne __PACKAGE__) { #мы не в myconst, должны экспортировать все
-		die "another package";
-		unshift @_, $module_name;
-		goto &Exporter::import;
-		myconst->export_to_level(1, @EXPORT = qw/import/);
+	if (scalar @_ %2 != 0 ) {
+		die "odd args";
 	}
-	else {
-		if (scalar @_ %2 != 0 ) {
-			die "odd args";
+	my %args = @_;
+	foreach (keys %args) {
+		if (not ref $args{$_}) {
+			create_func($_, $args{$_});
+			push @EXPORT, $_;
+			push @{$EXPORT_TAGS{all}}, $_;
 		}
-		if (@_) {
-			my %args = @_;
-			foreach (keys %args) {
-				if (not ref $args{$_}) {
-					create_func($_, $args{$_});
-					push @EXPORT, $_;
+		elsif (ref $args{$_} eq "HASH") {
+			my $group = $_;
+			my %hash = %{$args{$_}};
+			foreach (keys %hash) {
+				die "incorrect args" if (ref $hash{$_}); 
+				create_func($_, $hash{$_});
+				push @EXPORT, $_;
+				push @{$EXPORT_TAGS{$group}}, $_;
 				push @{$EXPORT_TAGS{all}}, $_;
-				}
-				elsif (ref $args{$_} eq "HASH") {
-					my $group = $_;
-					my %hash = %{$args{$_}};
-					foreach (keys %hash) {
-						die "incorrect args" if (ref $hash{$_}); 
-						create_func($_, $hash{$_});
-						push @EXPORT, $_;
-						push @{$EXPORT_TAGS{$group}}, $_;
-						push @{$EXPORT_TAGS{all}}, $_;
-					}
-				}
-				else { die "incorrect args" };
 			}
 		}
+		else { die "incorrect args" };
 	}
 	@EXPORT_OK = @EXPORT;
 	myconst->export_to_level(1,undef);
