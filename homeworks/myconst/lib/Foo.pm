@@ -1,0 +1,11 @@
+package Foo;
+
+use myconst math => {
+                PI => 3.14,
+                E => 2.7,
+            },
+            ZERO => 0,
+            EMPTY_STRING => '';
+
+say PI;
+1;
