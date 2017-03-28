@@ -7,5 +7,5 @@ use myconst math => {
             ZERO => 0,
             EMPTY_STRING => '';
 
-say math;
+say PI;
 1;

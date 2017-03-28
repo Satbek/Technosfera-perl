@@ -2,6 +2,5 @@ package Baz;
 
 use Foo qw/:all/;
 
-print EMPTY_STRING;     # ''
-print PI;               # 3.14
+
 1;
