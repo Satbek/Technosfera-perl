@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use Scalar::Util 'looks_like_number';
 use DDP;
-#use Exporter 'import';
-#use diagnostics;
+
 =encoding utf8
 
 =head1 NAME
@@ -38,8 +37,8 @@ use aaa qw/:math PI ZERO/;
 print ZERO;             # 0
 print PI;               # 3.14
 =cut
-#use Exporter;
-our $package = caller;
+
+my $package = caller;
 
 sub create_func($$) {
 	my ($key, $value) = @_;
@@ -49,11 +48,6 @@ sub create_func($$) {
 	eval ("sub ${package}::$key() { return \"$value\"; }");
 	die $@ if $@;
 }
-
-sub create_arrays {
-
-}
-
 
 my @EXPORT_OK;
 my %EXPORT_TAGS;
@@ -90,7 +84,6 @@ sub import {
 	@{"${package}::EXPORT_OK"} = @EXPORT_OK; #"
 	use strict;
 }
-
 
 1;
 
