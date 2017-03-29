@@ -56,7 +56,10 @@ sub import {
 	@{"${package}::ISA"} = qw(Exporter); #"
 	use strict;
 	my $module_name = shift;
-	if (scalar @_ %2 != 0 ) {
+	for (@_) {
+		die "undef members" if (!$_);
+	}
+	if ( scalar @_ % 2 != 0 ) {
 		die "odd args";
 	}
 	my %args = @_;
