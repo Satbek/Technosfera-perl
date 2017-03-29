@@ -38,10 +38,9 @@ use aaa qw/:math PI ZERO/;
 print ZERO;             # 0
 print PI;               # 3.14
 =cut
-use Exporter;
-use Import::Into;
+#use Exporter;
 our $package = caller;
-p $package;
+
 sub create_func($$) {
 	my ($key, $value) = @_;
 	die "invalid constant name" unless ($key =~ /[a-zA-z]/);
@@ -49,13 +48,20 @@ sub create_func($$) {
 	$value = quotemeta($value);
 	eval ("sub ${package}::$key() { return \"$value\"; }");
 	die $@ if $@;
-	p $package;
-	p $key;
 }
 
-sub import {
-	my $module_name = shift;
+sub create_arrays {
 
+}
+
+
+my @EXPORT_OK;
+my %EXPORT_TAGS;
+sub import {
+	no strict;
+	@{"${package}::ISA"} = qw(Exporter); #"
+	use strict;
+	my $module_name = shift;
 	if (scalar @_ %2 != 0 ) {
 		die "odd args";
 	}
@@ -63,18 +69,26 @@ sub import {
 	foreach my $name (keys %args) {
 		if (not ref $args{$name}) {
 			create_func($name, $args{$name});
+			push @EXPORT_OK, $name;
+			push @{$EXPORT_TAGS{all}}, $name;
 		}
 		elsif (ref $args{$name} eq "HASH") {
-			my $group = $_;
+			my $group = $name;
 			my %hash = %{$args{$name}};
 			foreach my $f_name (keys %hash) {
 				die "incorrect args" if (ref $hash{$f_name}); 
 				create_func($f_name, $hash{$f_name});
+				push @EXPORT_OK, $f_name;
+				push @{$EXPORT_TAGS{$group}}, $f_name;
+				push @{$EXPORT_TAGS{all}}, $f_name;
 			}
 		}
 		else { die "incorrect args" };
 	}
-	
+	no strict;
+	%{"${package}::EXPORT_TAGS"} = %EXPORT_TAGS; #"
+	@{"${package}::EXPORT_OK"} = @EXPORT_OK; #"
+	use strict;
 }
 
 

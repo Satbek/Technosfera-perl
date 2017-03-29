@@ -5,6 +5,7 @@ use warnings;
 use Scalar::Util 'looks_like_number';
 use DDP;
 #use Exporter 'import';
+#use diagnostics;
 =encoding utf8
 
 =head1 NAME
@@ -37,52 +38,59 @@ use aaa qw/:math PI ZERO/;
 print ZERO;             # 0
 print PI;               # 3.14
 =cut
+#use Exporter;
+our $package = caller;
 
-use parent "Exporter";
 sub create_func($$) {
 	my ($key, $value) = @_;
+	die "invalid constant name" unless ($key =~ /[a-zA-z]/);
+	die "invalid constant" unless ($value =~ /[a-zA-z0-9_]/);
 	$value = quotemeta($value);
-	eval ("sub $key() { return \"$value\"; }");
+	eval ("sub ${package}::$key() { return \"$value\"; }");
 	die $@ if $@;
 }
 
-our @EXPORT;
-our %EXPORT_TAGS;
-our @EXPORT_OK;
-sub import {
-	my $module_name = shift;
+sub create_arrays {
 
-	 {
-		if (scalar @_ %2 != 0 ) {
-			die "odd args";
-		}
-		my %args = @_;
-		foreach (keys %args) {
-			if (not ref $args{$_}) {
-				create_func($_, $args{$_});
-				push @EXPORT, $_;
-				push @{$EXPORT_TAGS{all}}, $_;
-			}
-			elsif (ref $args{$_} eq "HASH") {
-				my $group = $_;
-				my %hash = %{$args{$_}};
-				foreach (keys %hash) {
-					die "incorrect args" if (ref $hash{$_}); 
-					create_func($_, $hash{$_});
-					push @EXPORT, $_;
-					push @{$EXPORT_TAGS{$group}}, $_;
-					push @{$EXPORT_TAGS{all}}, $_;
-				}
-			}
-			else { die "incorrect args" };
-		}
-	}
-	@EXPORT_OK = @EXPORT;
-	myconst->export_to_level(1,undef);
-	#p @EXPORT;
-	#p $_;
-	#p @EXPORT_OK;
-	#p %EXPORT_TAGS;
 }
 
+
+my @EXPORT_OK;
+my %EXPORT_TAGS;
+sub import {
+	no strict;
+	@{"${package}::ISA"} = qw(Exporter); #"
+	use strict;
+	my $module_name = shift;
+	if (scalar @_ %2 != 0 ) {
+		die "odd args";
+	}
+	my %args = @_;
+	foreach my $name (keys %args) {
+		if (not ref $args{$name}) {
+			create_func($name, $args{$name});
+			push @EXPORT_OK, $name;
+			push @{$EXPORT_TAGS{all}}, $name;
+		}
+		elsif (ref $args{$name} eq "HASH") {
+			my $group = $name;
+			my %hash = %{$args{$name}};
+			foreach my $f_name (keys %hash) {
+				die "incorrect args" if (ref $hash{$f_name}); 
+				create_func($f_name, $hash{$f_name});
+				push @EXPORT_OK, $f_name;
+				push @{$EXPORT_TAGS{$group}}, $f_name;
+				push @{$EXPORT_TAGS{all}}, $f_name;
+			}
+		}
+		else { die "incorrect args" };
+	}
+	no strict;
+	%{"${package}::EXPORT_TAGS"} = %EXPORT_TAGS; #"
+	@{"${package}::EXPORT_OK"} = @EXPORT_OK; #"
+	use strict;
+}
+
+
 1;
+
