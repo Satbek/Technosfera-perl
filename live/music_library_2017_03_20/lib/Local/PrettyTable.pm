@@ -95,12 +95,30 @@ sub _row {
         push(@cells, $cell);
     }
 
+<<<<<<< HEAD
+=======
+    return '' unless @cells;
+
+>>>>>>> upstream/master
     return '|' . (
         join '|', @cells
     ) . '|' . "\n";
 }
 
 sub to_string {
+<<<<<<< HEAD
+=======
+    my ($self) = @_;
+
+    my @rows = map {$self->_row($_)} 0 .. @{$self->data} - 1;
+    return '' if !@rows || !$rows[0];
+
+    return join('', (
+        $self->_header,
+        join($self->_separator, @rows),
+        $self->_footer,
+    ));
+>>>>>>> upstream/master
 }
 
 1;

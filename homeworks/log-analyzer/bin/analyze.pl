@@ -15,7 +15,7 @@ use DDP;
 #* коэффициент сжатия данных перед передачей по сети 8
 
 my $filepath = $ARGV[0];
-die "USAGE:\n$0 <log-file.bz2>\n"  unless $filepath;
+die "USAGE:\n$0 <log-file>\n"  unless $filepath;
 die "File '$filepath' not found\n" unless -f $filepath;
 
 my $parsed_data = parse_file($filepath);
@@ -27,10 +27,20 @@ sub parse_file {
 
     # you can put your code here
 
+    my $fd;
+    if ($file =~ /\.bz2$/) {
+        open $fd, "-|", "bunzip2 < $file" or die "Can't open '$file' via bunzip2: $!";
+    } else {
+        open $fd, "<", $file or die "Can't open '$file': $!";
+    }
+
     my $result;
+<<<<<<< HEAD
 	my %statuses;
     open my $fd, "-|", "bunzip2 < $file" or die "Can't open '$file': $!";
 	my %logs;
+=======
+>>>>>>> upstream/master
     while (my $log_line = <$fd>) {
         # you can put your code here
         # $log_line contains line from log file

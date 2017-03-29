@@ -84,4 +84,57 @@ sub test__row {
     return;
 }
 
+<<<<<<< HEAD
+=======
+sub test__row__no_cols {
+    my ($self) = @_;
+
+    my $table = Local::PrettyTable->new(data => [[], [], []]);
+
+    is(
+        $table->_row(1),
+        '',
+    );
+
+    return;
+}
+
+sub test_to_string {
+    my ($self) = @_;
+
+    is(
+        $self->{table}->to_string(),
+        "/-----------------------------\\\n" .
+        "|      bamby |   4 |    moose |\n"  .
+        "|------------+-----+----------|\n"  .
+        "|      sonic |   2 | hedgehog |\n"  .
+        "|------------+-----+----------|\n"  .
+        "| dumbledore | 100 |    human |\n"  .
+        "\\-----------------------------/\n"
+    );
+
+    return;
+}
+
+sub test_to_string__no_rows {
+    my ($self) = @_;
+
+    my $table = Local::PrettyTable->new(data => []);
+
+    is($table->to_string, '');
+
+    return;
+}
+
+sub test_to_string__no_cols {
+    my ($self) = @_;
+
+    my $table = Local::PrettyTable->new(data => [[], [], []]);
+
+    is($table->to_string, '');
+
+    return;
+}
+
+>>>>>>> upstream/master
 1;

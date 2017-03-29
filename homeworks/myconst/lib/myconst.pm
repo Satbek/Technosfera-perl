@@ -38,8 +38,7 @@ print ZERO;             # 0
 print PI;               # 3.14
 =cut
 
-my $package = caller;
-
+my $package;
 sub create_func($$) {
 	my ($key, $value) = @_;
 	die "invalid constant name" unless ($key =~ /[a-zA-z]/);
@@ -52,6 +51,7 @@ sub create_func($$) {
 my @EXPORT_OK;
 my %EXPORT_TAGS;
 sub import {
+	$package = caller;
 	no strict;
 	@{"${package}::ISA"} = qw(Exporter); #"
 	use strict;
@@ -63,6 +63,7 @@ sub import {
 		die "odd args";
 	}
 	my %args = @_;
+
 	foreach my $name (keys %args) {
 		if (not ref $args{$name}) {
 			create_func($name, $args{$name});
@@ -86,6 +87,8 @@ sub import {
 	%{"${package}::EXPORT_TAGS"} = %EXPORT_TAGS; #"
 	@{"${package}::EXPORT_OK"} = @EXPORT_OK; #"
 	use strict;
+	delete @EXPORT_TAGS{keys %EXPORT_TAGS};
+	delete @EXPORT_OK[0 .. $#EXPORT_OK];
 }
 
 1;
