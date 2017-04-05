@@ -52,7 +52,7 @@ sub reduce {
 				$self->{reduced} += $row->get($self->{field}, 0);
 			}
 		}
-		else { $self->{reduced} += 0 };
+		else { return undef };
 	}
 	else { return undef }
 }

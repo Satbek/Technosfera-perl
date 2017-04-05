@@ -28,7 +28,7 @@ sub new {
 		unless ( exists $args{text} );
 	die "text is not scalar"
 		if ( ref $args{text} );
-	$self = bless {}, $self;
+	$self = bless {};
 	$self->{text} = $args{text};
 	if ( exists $args{delimiter} ) {
 		$self->{delimiter} = $args{delimiter};

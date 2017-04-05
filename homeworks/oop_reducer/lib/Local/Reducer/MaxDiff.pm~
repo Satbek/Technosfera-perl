@@ -47,7 +47,7 @@ sub reduce {
 	my $row = $self->{source}->next; 
 	if ($row) {
 		$row = $self->{row_class}->new(str => $row);
-		if ($row and looks_like_number( $row->get($self->{bottom}) ) and
+		if ( looks_like_number( $row->get($self->{bottom}) ) and
 			looks_like_number( $row->get($self->{top}) ) ) {
 			my $diff = $row->get($self->{top}) - $row->get($self->{bottom});
 			$self->{reduced} = $diff if $diff > $self->reduced;

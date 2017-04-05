@@ -40,6 +40,7 @@ sub next {
 	if ( $self->{index_of_current} <= $self->{index_of_last} ) {
 		return $self->{array}->[$self->{index_of_current}++];
 	}
+	else { return undef }
 }
 1;
 

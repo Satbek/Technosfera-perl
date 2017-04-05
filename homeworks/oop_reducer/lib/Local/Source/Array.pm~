@@ -28,7 +28,7 @@ sub new {
 		unless ( exists $args{array} );
 	die "array ref is not array_ref"
 		unless (ref $args{array} eq 'ARRAY');
-	$self = bless {}, $self;
+	$self = bless {};
 	$self->{array} = $args{array};
 	$self->{index_of_current} = 0;
 	$self->{index_of_last} = scalar @{$args{array}} - 1;
@@ -40,6 +40,7 @@ sub next {
 	if ( $self->{index_of_current} <= $self->{index_of_last} ) {
 		return $self->{array}->[$self->{index_of_current}++];
 	}
+	else { return undef }
 }
 1;
 

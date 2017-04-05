@@ -37,8 +37,8 @@ sub new {
 	$self = bless {};
 	my @pairs = split ( /,/, $args{str} );
 	foreach my $key_value(@pairs) {
-		return undef unless ( $key_value =~ m/^([^:]+):([^:]+)$/ );
-		$self->{$1} = $2;
+		return undef unless ( $key_value =~ m/^(?<key>[^:]+):(?<value>[^:]+)$/ );
+		$self->{$+{key}} = $+{value};
 	}
 	return bless $self;
 }

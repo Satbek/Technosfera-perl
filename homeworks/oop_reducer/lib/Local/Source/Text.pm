@@ -44,7 +44,8 @@ sub new {
 
 sub next {
 	my $self = shift;
-	return shift @{$self->{strings}};
+	if (scalar @{$self->{strings}} ) { return shift @{$self->{strings}}; }
+	else { return undef };
 }
 1;
 
