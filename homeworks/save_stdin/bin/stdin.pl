@@ -31,19 +31,18 @@ $SIG{INT} = sub {
 };
 
 
+unless (defined $ARGV[0]) { die "no name for file!" }
 my $file_name = $ARGV[0];
-unless (defined $file_name) { die "no name for file!" }
 unless ($file_name =~ m/--file=\s*(\w+)/) { die "incorrect input" };
 $file_name = $1;
 say "Get ready";
 open (my $fh, '>:encoding(UTF-8)', $file_name) or die $!;
 
-select($fh);
-$| = 1;
+STDIN->autoflush(1);
 
 my %info;
 while (<STDIN>) {
-	print $_;
+	print $fh $_;
 	$info{size_of_data} += do {use bytes; chomp ($_); length($_)};
 	$info{strings_count}++;
 	$info{all_str_length} += length($_);
@@ -51,7 +50,6 @@ while (<STDIN>) {
 
 END {
 	close($fh);
-	select(STDOUT);
 	unless (defined $info{size_of_data}) { $info{size_of_data} = 0 };
 	unless (defined $info{strings_count}) { $info{strings_count} = 0 };
 	if ($info{strings_count}) {
