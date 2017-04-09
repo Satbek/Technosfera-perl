@@ -104,7 +104,7 @@ sub mult {
 			for my $row(keys $input{$proc}) {
 				$child_result{$row} = calc_row($input{$proc}->{$row}, $mat_b);
 			}
-			$pm->finish(0, \%child_result);
+			$pm->finish($proc, \%child_result);
 		}
 		$pm->wait_all_children;
 		for my $proc( sort keys %output ) {
