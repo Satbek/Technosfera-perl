@@ -18,7 +18,6 @@ use 5.018;
 При завершении программы в STDOUT должна быть выведена статистика работы программы: размер прочитанных данных, количество строк, стредняя длинна строки). 
 =cut
 
-
 my $sig_int_flag = 0;
 $SIG{INT} = sub {
 	if ($sig_int_flag) {
@@ -30,11 +29,9 @@ $SIG{INT} = sub {
 	}
 };
 
-
-unless (defined $ARGV[0]) { die "no name for file!" }
-my $file_name = $ARGV[0];
-unless ($file_name =~ m/--file=\s*(\w+)/) { die "incorrect input" };
-$file_name = $1;
+my $file_name;
+GetOptions ('file=s' => \$file_name);
+unless (defined $file_name) { die "no name for file!" }
 say "Get ready";
 open (my $fh, '>:encoding(UTF-8)', $file_name) or die $!;
 
