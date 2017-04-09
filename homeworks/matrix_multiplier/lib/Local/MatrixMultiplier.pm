@@ -7,7 +7,7 @@ use 5.018;
 use Parallel::ForkManager;
 use Exporter 'import';
 our @EXPORT = qw(mult);
-use JSON::XS;
+
 
 =head1
 Написать модуль производящий паралельное умножение квадратных матриц.
