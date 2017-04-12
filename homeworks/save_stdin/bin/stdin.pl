@@ -20,13 +20,9 @@ use 5.018;
 my $sig_int_flag = 0;
 
 $SIG{INT} = sub {
-	if ($sig_int_flag) {
-		exit(0);
-	}
-	else {
-		$sig_int_flag++;
+	exit(0) if ($sig_int_flag);
+	$sig_int_flag++;
 		print STDERR "Double Ctrl+C for exit";
-	}
 };
 
 my $file_name;
@@ -35,7 +31,6 @@ unless (defined $file_name) { die "no name for file!" }
 open (my $fh, '>:encoding(UTF-8)', $file_name) or die $!;
 
 STDIN->autoflush(1);
-
 my %info;
 $info{size_of_data} = 0;
 $info{strings_count} = 0;
