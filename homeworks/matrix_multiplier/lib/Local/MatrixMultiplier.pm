@@ -117,14 +117,12 @@ sub mult {
 #			}
 #		}
 		my @pipes;
-		my $processes;
 		foreach my $proc(0..$max_child - 1){
 			my ($w, $r);
 			pipe ($r, $w);
 			if (my $pid = fork()) {
 				push @pipes, $r;
 				close($w);
-				$processes++;
 			}
 			else {
 				my %child_result;
