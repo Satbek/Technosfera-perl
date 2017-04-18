@@ -4,8 +4,11 @@ use strict;
 use warnings;
 use DDP;
 use 5.018;
+use JSON::XS;
 use Parallel::ForkManager;
 use Exporter 'import';
+use POSIX ":sys_wait_h";
+
 our @EXPORT = qw(mult);
 
 
@@ -90,29 +93,73 @@ sub mult {
 	}
 	elsif ($max_child > 0) {
 		my %input = %{create_input($dim, $max_child, $mat_a)};
+		#p %input;
 		my %output;
-		my $pm = Parallel::ForkManager->new($max_child);
-		$pm->run_on_finish( sub {
-			my ($pid, $exit_code, $ident, $exit_signal, 
-				$core_dump, $data_structure_reference) = @_;
-			$output{$ident} = $data_structure_reference;
-		});
-		PROCCESES:
-		foreach my $proc(keys %input) {
-			my $pid = $pm->start($proc) and next PROCCESES;
-			my %child_result;
-			for my $row(keys $input{$proc}) {
-				$child_result{$row} = calc_row($input{$proc}->{$row}, $mat_b);
+#		my $pm = Parallel::ForkManager->new($max_child);
+#		$pm->run_on_finish( sub {
+#			my ($pid, $exit_code, $ident, $exit_signal, 
+#				$core_dump, $data_structure_reference) = @_;
+#			$output{$ident} = $data_structure_reference;
+#		});
+#		PROCCESES:
+#		foreach my $proc(keys %input) {
+#			my $pid = $pm->start($proc) and next PROCCESES;
+#			my %child_result;
+#			for my $row(keys $input{$proc}) {
+#				$child_result{$row} = calc_row($input{$proc}->{$row}, $mat_b);
+#			}
+#			$pm->finish(0, \%child_result);
+#		}
+#		$pm->wait_all_children;
+#		for my $proc( sort keys %output ) {
+#			for my $row( sort keys $output{$proc} ) {
+#				push @{$res}, $output{$proc}->{$row};
+#			}
+#		}
+		my @pipes;
+		my $processes;
+		foreach my $proc(0..$max_child - 1){
+			my ($w, $r);
+			pipe ($r, $w);
+			if (my $pid = fork()) {
+				push @pipes, $r;
+				close($w);
+				$processes++;
 			}
-			$pm->finish(0, \%child_result);
+			else {
+				my %child_result;
+				close ($r);
+				for my $row(keys $input{$proc}) {
+					$child_result{$row} = calc_row($input{$proc}->{$row}, $mat_b);
+					#сериализуем в json и пишем в $w
+				}
+				my $json_text = encode_json \%child_result;
+				#p $json_text;
+				print $w $json_text;
+				$w->autoflush();
+				exit;
+			}
 		}
-		$pm->wait_all_children;
+		1 while waitpid(-1, WNOHANG) > 0;
+		my $proc = 0;
+		for my $r(@pipes) {
+			while (<$r>) {
+				my %child_result = %{decode_json $_};
+				#p %child_result;
+				for my $row(sort keys %child_result) {
+						$output{$proc}->{$row} = $child_result{$row};
+				}
+				$proc++;
+			}
+		}
+		#p %output;
 		for my $proc( sort keys %output ) {
 			for my $row( sort keys $output{$proc} ) {
 				push @{$res}, $output{$proc}->{$row};
 			}
 		}
 	}
+	#p $res;
 	return $res;
 }
 1;
