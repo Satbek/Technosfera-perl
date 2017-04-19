@@ -63,7 +63,6 @@ sub import {
 		die "odd args";
 	}
 	my %args = @_;
-
 	foreach my $name (keys %args) {
 		if (not ref $args{$name}) {
 			create_func($name, $args{$name});
@@ -88,7 +87,7 @@ sub import {
 	@{"${package}::EXPORT_OK"} = @EXPORT_OK; #"
 	use strict;
 	delete @EXPORT_TAGS{keys %EXPORT_TAGS};
-
+	delete @EXPORT_OK[0 .. $#EXPORT_OK];
 }
 
 1;

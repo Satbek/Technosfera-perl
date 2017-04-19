@@ -48,9 +48,9 @@ sub create_func($$) {
 	die $@ if $@;
 }
 
-my @EXPORT_OK;
-my %EXPORT_TAGS;
 sub import {
+	my @EXPORT_OK;
+	my %EXPORT_TAGS;
 	$package = caller;
 	no strict;
 	@{"${package}::ISA"} = qw(Exporter); #"
@@ -63,7 +63,6 @@ sub import {
 		die "odd args";
 	}
 	my %args = @_;
-
 	foreach my $name (keys %args) {
 		if (not ref $args{$name}) {
 			create_func($name, $args{$name});
