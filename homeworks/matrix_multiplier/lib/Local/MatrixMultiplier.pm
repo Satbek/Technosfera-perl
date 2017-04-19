@@ -124,6 +124,7 @@ sub mult {
 				}
 				$proc++;
 			}
+			close($r);
 		}
 		for my $proc( sort keys %output ) {
 			for my $row( sort keys $output{$proc} ) {
