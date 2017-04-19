@@ -114,7 +114,7 @@ sub mult {
 				exit;
 			}
 		}
-		1 while waitpid(-1, WNOHANG) > 0;
+		wait();
 		my $proc = 0;
 		for my $r(@pipes) {
 			while (<$r>) {
