@@ -95,12 +95,14 @@ sub mult {
 		my %input = %{create_input($dim, $max_child, $mat_a)};
 		my %output;
 		my @pipes;
+		my @pides;
 		foreach my $proc(0..$max_child - 1){
 			my ($w, $r);
 			pipe ($r, $w);
 			if (my $pid = fork()) {
 				push @pipes, $r;
 				close($w);
+				push @pides, $pid;
 			}
 			else {
 				my %child_result;
@@ -114,7 +116,7 @@ sub mult {
 				exit;
 			}
 		}
-		1 while waitpid(-1, WNOHANG) > 0;
+		waitpid($_, 0) for @pides;
 		my $proc = 0;
 		for my $r(@pipes) {
 			while (<$r>) {
