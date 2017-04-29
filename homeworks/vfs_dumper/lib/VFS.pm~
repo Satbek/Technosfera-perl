@@ -87,6 +87,8 @@ sub parse {
 				my $size = pack "C*", @size;
 				$size = unpack "N", $size;
 				$buf_res->{size} = $size;
+#				$buf_res->{hash} = join '', 
+#							map {sprintf("%02x", $_)} splice (@data, 0, 20);
 				my @hash = splice (@data, 0, 20);
 				my $hash = pack "C*", @hash;
 				@hash = unpack "H*", $hash;

@@ -1,0 +1,207 @@
+{
+   "type" : "directory",
+   "name" : "root",
+   "mode" : {
+      "user" : {
+         "read" : true,
+         "write" : true,
+         "execute" : true
+      },
+      "other" : {
+         "write" : false,
+         "execute" : true,
+         "read" : true
+      },
+      "group" : {
+         "write" : true,
+         "execute" : true,
+         "read" : true
+      }
+   },
+   "list" : [
+      {
+         "mode" : {
+            "user" : {
+               "execute" : true,
+               "write" : true,
+               "read" : true
+            },
+            "other" : {
+               "read" : true,
+               "write" : false,
+               "execute" : true
+            },
+            "group" : {
+               "read" : true,
+               "execute" : true,
+               "write" : true
+            }
+         },
+         "list" : [
+            {
+               "size" : 45056,
+               "mode" : {
+                  "other" : {
+                     "write" : false,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "user" : {
+                     "write" : true,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "group" : {
+                     "read" : true,
+                     "execute" : false,
+                     "write" : true
+                  }
+               },
+               "name" : "Договор аренды.docx",
+               "type" : "file",
+               "hash" : "494bf971d20f6db1822754b89cc26cbb2d19cee3"
+            },
+            {
+               "name" : "предложение о работе.docx",
+               "type" : "file",
+               "hash" : "35472bcf3693bee9f3d23f0f07744f2be4741b2c",
+               "mode" : {
+                  "group" : {
+                     "execute" : false,
+                     "write" : true,
+                     "read" : true
+                  },
+                  "other" : {
+                     "write" : false,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "user" : {
+                     "write" : true,
+                     "execute" : false,
+                     "read" : true
+                  }
+               },
+               "size" : 168756
+            }
+         ],
+         "name" : "Документы",
+         "type" : "directory"
+      },
+      {
+         "mode" : {
+            "other" : {
+               "write" : false,
+               "execute" : true,
+               "read" : true
+            },
+            "user" : {
+               "execute" : true,
+               "write" : true,
+               "read" : true
+            },
+            "group" : {
+               "read" : true,
+               "write" : true,
+               "execute" : true
+            }
+         },
+         "list" : [
+            {
+               "name" : "DSC_0003.JPG",
+               "hash" : "e3af440cfe876329544451c34b2caaa264027470",
+               "type" : "file",
+               "mode" : {
+                  "group" : {
+                     "write" : true,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "user" : {
+                     "write" : true,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "other" : {
+                     "read" : true,
+                     "execute" : false,
+                     "write" : false
+                  }
+               },
+               "size" : 660348
+            },
+            {
+               "size" : 572121,
+               "hash" : "58ee0cc0a37c6a6c021d677f7eab0e2d373458cd",
+               "type" : "file",
+               "name" : "DSC_0004.JPG",
+               "mode" : {
+                  "user" : {
+                     "write" : true,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "other" : {
+                     "write" : false,
+                     "execute" : false,
+                     "read" : true
+                  },
+                  "group" : {
+                     "read" : true,
+                     "execute" : false,
+                     "write" : true
+                  }
+               }
+            }
+         ],
+         "name" : "Фото",
+         "type" : "directory"
+      },
+      {
+         "type" : "directory",
+         "name" : "Файлы",
+         "list" : [
+            {
+               "size" : 2521706,
+               "hash" : "0d6297cfe807534f80dc855a2cf338c109f57275",
+               "type" : "file",
+               "name" : "steam_latest.deb",
+               "mode" : {
+                  "user" : {
+                     "read" : true,
+                     "write" : true,
+                     "execute" : false
+                  },
+                  "other" : {
+                     "read" : true,
+                     "execute" : false,
+                     "write" : false
+                  },
+                  "group" : {
+                     "read" : true,
+                     "write" : true,
+                     "execute" : false
+                  }
+               }
+            }
+         ],
+         "mode" : {
+            "group" : {
+               "write" : true,
+               "execute" : true,
+               "read" : true
+            },
+            "other" : {
+               "write" : false,
+               "execute" : true,
+               "read" : true
+            },
+            "user" : {
+               "write" : true,
+               "execute" : true,
+               "read" : true
+            }
+         }
+      }
+   ]
+}
